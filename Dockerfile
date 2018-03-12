@@ -52,4 +52,4 @@ RUN chmod +x unity-installer
 
 RUN yes | ./unity-installer --unattended \
     --components=Unity,Windows,Android \
-    --install-location=/unity
+    --install-location=/opt/unity
