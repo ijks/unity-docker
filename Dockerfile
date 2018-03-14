@@ -13,7 +13,7 @@ ADD https://beta.unity3d.com/download/aea5ecb8f9fd/UnitySetup-2017.3.1f1 \
 RUN chmod +x unity-installer
 
 RUN yes | ./unity-installer --unattended \
-    --components=Unity,Windows,Android \
+    --components=Unity \
     --install-location=/opt/unity
 
 # Dependencies for the editor.
