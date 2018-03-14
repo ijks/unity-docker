@@ -1,13 +1,25 @@
 FROM ubuntu:latest
 
+# Dependencies for the download assistant
 RUN apt-get update && apt-get install -y \
-    # Download assistant dependencies
     libgtk2.0-0 \
     libsoup2.4-1 \
     libarchive13 \
     libpng16-16 \
-    libgconf-2-4 \
-    # Editor dependencies
+    libgconf-2-4
+
+ADD https://beta.unity3d.com/download/aea5ecb8f9fd/UnitySetup-2017.3.1f1 \
+    unity-installer
+RUN chmod +x unity-installer
+
+RUN yes | ./unity-installer --unattended \
+    --components=Unity,Windows,Android \
+    --install-location=/opt/unity
+
+# Dependencies for the editor.
+# We install these afterwards, so that we have to rebuild less layers if a
+# dependency changes.
+RUN apt-get install -y \
     gconf-service \
     lib32gcc1 \
     lib32stdc++6 \
@@ -44,12 +56,7 @@ RUN apt-get update && apt-get install -y \
     libxtst6 \
     zlib1g \
     debconf \
-    npm
+    npm \
+    # 'Fake' X server for running headless
+    xvfb
 
-ADD https://beta.unity3d.com/download/aea5ecb8f9fd/UnitySetup-2017.3.1f1 \
-    unity-installer
-RUN chmod +x unity-installer
-
-RUN yes | ./unity-installer --unattended \
-    --components=Unity,Windows,Android \
-    --install-location=/opt/unity
